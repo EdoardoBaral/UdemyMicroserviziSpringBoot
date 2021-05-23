@@ -6,4 +6,5 @@ public interface UserService
 {
 	SampleMessage getListaUtenti() throws Exception;
 	SampleMessage getListaUtentiDatabase() throws Exception;
+	SampleMessage cercaUtenteDatabase(int idUtente) throws Exception;
 }

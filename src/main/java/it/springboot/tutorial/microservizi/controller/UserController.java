@@ -79,4 +79,21 @@ public class UserController
 		
 		return response;
 	}
+	
+	@GetMapping(value = "/cercaUtenteDatabase/{idUtente}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public SampleMessage cercaUtenteDatabase(@PathVariable(value = "idUtente") int idUtente)
+	{
+		SampleMessage response = new SampleMessage();
+		try
+		{
+			response = userService.cercaUtenteDatabase(idUtente);
+		}
+		catch(Exception ex)
+		{
+			response.setStatus(Constants.KO);
+			response.setMessage(ex.getMessage());
+		}
+		
+		return response;
+	}
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService
@@ -45,6 +46,18 @@ public class UserServiceImpl implements UserService
 		
 		response.setStatus(Constants.OK);
 		response.setMessage(listaNomi.toString());
+		
+		return response;
+	}
+	
+	@Override
+	public SampleMessage cercaUtenteDatabase(int idUtente) throws Exception
+	{
+		SampleMessage response = new SampleMessage();
+		Optional<User> user = userRepository.findById(idUtente);
+		
+		response.setStatus(Constants.OK);
+		response.setMessage(user.get().toString());
 		
 		return response;
 	}
