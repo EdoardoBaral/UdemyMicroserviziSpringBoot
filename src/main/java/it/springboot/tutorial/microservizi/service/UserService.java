@@ -5,4 +5,5 @@ import it.springboot.tutorial.microservizi.utility.SampleMessage;
 public interface UserService
 {
 	SampleMessage getListaUtenti() throws Exception;
+	SampleMessage getListaUtentiDatabase() throws Exception;
 }

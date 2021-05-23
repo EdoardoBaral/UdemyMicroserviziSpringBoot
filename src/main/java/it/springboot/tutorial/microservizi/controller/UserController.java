@@ -62,4 +62,21 @@ public class UserController
 		
 		return response;
 	}
+	
+	@GetMapping(value = "/listaUtentiDatabase", produces = MediaType.APPLICATION_JSON_VALUE)
+	public SampleMessage listaUtentiDatabase()
+	{
+		SampleMessage response = new SampleMessage();
+		try
+		{
+			response = userService.getListaUtentiDatabase();
+		}
+		catch(Exception ex)
+		{
+			response.setStatus(Constants.KO);
+			response.setMessage(ex.getMessage());
+		}
+		
+		return response;
+	}
 }
