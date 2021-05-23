@@ -7,6 +7,7 @@ import it.springboot.tutorial.microservizi.utility.SampleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,9 @@ public class UserServiceImpl implements UserService
 {
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private EntityManager manager;
 	
 	@Override
 	public SampleMessage getListaUtenti() throws Exception
@@ -58,6 +62,45 @@ public class UserServiceImpl implements UserService
 		
 		response.setStatus(Constants.OK);
 		response.setMessage(user.get().toString());
+		
+		return response;
+	}
+	
+	@Override
+	public SampleMessage salvaUtente(String nome, String cognome, String codiceFiscale) throws Exception
+	{
+		SampleMessage response = new SampleMessage();
+		User user = new User(nome, cognome, codiceFiscale);
+		
+		userRepository.saveAndFlush(user);
+		
+		response.setStatus(Constants.OK);
+		response.setMessage("Utente salvato: "+ user);
+		
+		return response;
+	}
+	
+	@Override
+	public SampleMessage salvaAggiornaUtente(String nome, String cognome, String codiceFiscale) throws Exception
+	{
+		SampleMessage response = new SampleMessage();
+		User user = userRepository.findByCodiceFiscale(codiceFiscale);
+		
+		if(user == null)
+		{
+			User user2 = new User(nome, cognome, codiceFiscale);
+			manager.persist(user2);
+			response.setStatus(Constants.OK);
+			response.setMessage("Utente salvato: "+ user2);
+		}
+		else
+		{
+			user.setNome(nome);
+			user.setCognome(cognome);
+			manager.merge(user);
+			response.setStatus(Constants.OK);
+			response.setMessage("Utente aggiornato: "+ user);
+		}
 		
 		return response;
 	}

@@ -5,10 +5,9 @@ import it.springboot.tutorial.microservizi.utility.Constants;
 import it.springboot.tutorial.microservizi.utility.SampleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.transaction.Transactional;
 
 @RestController
 public class UserController
@@ -87,6 +86,45 @@ public class UserController
 		try
 		{
 			response = userService.cercaUtenteDatabase(idUtente);
+		}
+		catch(Exception ex)
+		{
+			response.setStatus(Constants.KO);
+			response.setMessage(ex.getMessage());
+		}
+		
+		return response;
+	}
+	
+	@PutMapping(value = "/salvaUtente", produces = MediaType.APPLICATION_JSON_VALUE)
+	public SampleMessage salvaUtente(@RequestParam(value = "nome") String nome,
+									 @RequestParam(value = "cognome") String cognome,
+									 @RequestParam(value = "codiceFiscale") String codiceFiscale)
+	{
+		SampleMessage response = new SampleMessage();
+		try
+		{
+			response = userService.salvaUtente(nome, cognome, codiceFiscale);
+		}
+		catch(Exception ex)
+		{
+			response.setStatus(Constants.KO);
+			response.setMessage(ex.getMessage());
+		}
+		
+		return response;
+	}
+	
+	@PutMapping(value = "/salvaAggiornaUtente", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public SampleMessage salvaAggiornaUtente(@RequestParam(value = "nome") String nome,
+									 @RequestParam(value = "cognome") String cognome,
+									 @RequestParam(value = "codiceFiscale") String codiceFiscale)
+	{
+		SampleMessage response = new SampleMessage();
+		try
+		{
+			response = userService.salvaAggiornaUtente(nome, cognome, codiceFiscale);
 		}
 		catch(Exception ex)
 		{
