@@ -1,5 +1,8 @@
 package it.springboot.tutorial.microservizi.service;
 
+import it.springboot.tutorial.microservizi.dao.UserDAO;
+import it.springboot.tutorial.microservizi.dto.UserDTO;
+import it.springboot.tutorial.microservizi.dto.UserDTOOut;
 import it.springboot.tutorial.microservizi.entity.User;
 import it.springboot.tutorial.microservizi.repository.UserRepository;
 import it.springboot.tutorial.microservizi.utility.Constants;
@@ -20,6 +23,9 @@ public class UserServiceImpl implements UserService
 	
 	@Autowired
 	private EntityManager manager;
+	
+	@Autowired
+	private UserDAO dao;
 	
 	@Override
 	public SampleMessage getListaUtenti() throws Exception
@@ -103,5 +109,15 @@ public class UserServiceImpl implements UserService
 		}
 		
 		return response;
+	}
+	
+	@Override
+	public UserDTOOut getListaUtentiCompleta() throws Exception
+	{
+		UserDTOOut userDTOOut = new UserDTOOut();
+		List<UserDTO> listaUtenti = dao.getListaUtenti();
+		userDTOOut.setUserList(listaUtenti);
+		
+		return userDTOOut;
 	}
 }

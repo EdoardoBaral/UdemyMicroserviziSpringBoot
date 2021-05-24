@@ -1,12 +1,15 @@
 package it.springboot.tutorial.microservizi.controller;
 
+import it.springboot.tutorial.microservizi.dto.UserDTOOut;
 import it.springboot.tutorial.microservizi.service.UserService;
 import it.springboot.tutorial.microservizi.utility.Constants;
 import it.springboot.tutorial.microservizi.utility.SampleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @RestController
@@ -133,5 +136,24 @@ public class UserController
 		}
 		
 		return response;
+	}
+	
+	@GetMapping(value = "/getListaUtentiCompleta", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getListaUtentiCompleta(HttpServletRequest request)
+	{
+		SampleMessage status = new SampleMessage();
+		UserDTOOut userDTOOut = null;
+		
+		try
+		{
+			userDTOOut = userService.getListaUtentiCompleta();
+		}
+		catch(Exception ex)
+		{
+			status.setStatus(Constants.KO);
+			status.setMessage(ex.getMessage());
+		}
+		
+		return new ResponseEntity<UserDTOOut>(userDTOOut, userDTOOut.getStatus().getHttpStatus(request));
 	}
 }

@@ -1,5 +1,6 @@
 package it.springboot.tutorial.microservizi.service;
 
+import it.springboot.tutorial.microservizi.dto.UserDTOOut;
 import it.springboot.tutorial.microservizi.utility.SampleMessage;
 
 public interface UserService
@@ -9,4 +10,5 @@ public interface UserService
 	SampleMessage cercaUtenteDatabase(int idUtente) throws Exception;
 	SampleMessage salvaUtente(String nome, String cognome, String codiceFiscale) throws Exception;
 	SampleMessage salvaAggiornaUtente(String nome, String cognome, String codiceFiscale) throws Exception;
+	UserDTOOut getListaUtentiCompleta() throws Exception;
 }
